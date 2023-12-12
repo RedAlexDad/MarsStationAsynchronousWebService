@@ -16,7 +16,7 @@ size_t Asynchronous::WriteCallback(void *contents, size_t size, size_t nmemb, vo
     return size * nmemb;
 }
 
-bool Asynchronous::performCurlRequest(const std::string& url, std::string& response) {
+bool Asynchronous::performGetCurlRequest(const std::string& url, std::string& response) {
     if (!curl) {
         std::cerr << "Failed to initialize CURL" << std::endl;
         return false;
@@ -35,6 +35,44 @@ bool Asynchronous::performCurlRequest(const std::string& url, std::string& respo
     return true;
 }
 
+bool Asynchronous::performPostCurlRequest(const std::string& url, const std::string& postData, std::string& response) {
+    if (!curl) {
+        std::cerr << "Failed to initialize CURL" << std::endl;
+        return false;
+    }
+
+    // Устанавливаем URL для POST-запроса
+    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+
+    // Включаем метод POST
+    curl_easy_setopt(curl, CURLOPT_POST, 1L);
+
+    // Устанавливаем данные для POST-запроса
+    curl_easy_setopt(curl, CURLOPT_COPYPOSTFIELDS, postData.c_str());
+
+    // Устанавливаем функцию обратного вызова для записи ответа
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+
+    CURLcode res = curl_easy_perform(curl);
+    if (res != CURLE_OK) {
+        curlError = curl_easy_strerror(res);
+        return false;
+    }
+
+    // Получаем код HTTP-ответа
+    long httpCode = 0;
+    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
+    if (httpCode != 200) {
+        std::cerr << "HTTP request failed with code: " << httpCode << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
+
+
 bool Asynchronous::parseJsonResponse(const std::string& jsonResponse, Json::Value& parsedRoot) {
     std::string errs;
     bool parsingSuccessful = jsonReader->parse(jsonResponse.c_str(), jsonResponse.c_str() + jsonResponse.size(), &parsedRoot, &errs);
@@ -46,10 +84,10 @@ bool Asynchronous::parseJsonResponse(const std::string& jsonResponse, Json::Valu
     return true;
 }
 
-void Asynchronous::executeRequest(const std::string& apiUrl) {
+void Asynchronous::executeGetRequest(const std::string& apiUrl) {
     std::string response;
     // Выполняем CURL запрос и выводим ответ
-    if (performCurlRequest(apiUrl, response)) {
+    if (performGetCurlRequest(apiUrl, response)) {
         std::cout << response << std::endl;
     } else {
         std::cerr << "Failed to perform CURL request. Error: " << curlError << std::endl;
@@ -59,7 +97,7 @@ void Asynchronous::executeRequest(const std::string& apiUrl) {
 void Asynchronous::processJsonResponseGeographicalObject(const std::string& apiUrl) {
     std::string response;
     // Выполняем CURL запрос и выводим ответ
-    if (performCurlRequest(apiUrl, response)) {
+    if (performGetCurlRequest(apiUrl, response)) {
         // Теперь обработаем ответ
         Json::Value root;
         // Обработка каждого элемента результата
@@ -70,6 +108,21 @@ void Asynchronous::processJsonResponseGeographicalObject(const std::string& apiU
                 std::cout << "Type: " << result["Type"].asString() << std::endl;
                 std::cout << "--------" << std::endl;
             }
+        }
+    } else {
+        std::cerr << "Failed to perform CURL request. Error: " << curlError << std::endl;
+    }
+}
+
+void Asynchronous::executePostRequestGeographicalObject(const std::string& apiUrl, const std::string& postData) {
+    std::string response;
+    // Выполняем POST-запрос и выводим ответ
+    if (performPostCurlRequest(apiUrl, postData, response)) {
+        std::cout << response << std::endl;
+        // Теперь можно обработать ответ с использованием нового метода
+        Json::Value root;
+        if (parseJsonResponse(response, root)) {
+            processJsonResponseGeographicalObject(response);
         }
     } else {
         std::cerr << "Failed to perform CURL request. Error: " << curlError << std::endl;

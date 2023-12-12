@@ -6,21 +6,28 @@
 #include <curl/curl.h>
 #include <jsoncpp/json/json.h>
 
-#define DOMEN "http://127.0.0.1:8000/"
-
 class Asynchronous {
 public:
     Asynchronous();
     ~Asynchronous();
 
-    // Метод для выполнения REST-API
-    bool performCurlRequest(const std::string& url, std::string& response);
+    // Метод для выполнения GET
+    bool performGetCurlRequest(const std::string& url, std::string& response);
+
+    // Метод для выполнения POST
+    bool performPostCurlRequest(const std::string& url, const std::string& postData, std::string& response);
+
     // Метод для парсинга в JSON формата
     bool parseJsonResponse(const std::string& jsonResponse, Json::Value& parsedRoot);
+
     // Метод для выполнения запроса и вывода ответа
-    void executeRequest(const std::string& apiUrl);
+    void executeGetRequest(const std::string& apiUrl);
+
     // Метод для обработки JSON-ответа
     void processJsonResponseGeographicalObject(const std::string& apiUrl);
+
+    // Метод для выполнения POST-запроса и вывода ответа
+    void executePostRequestGeographicalObject(const std::string& apiUrl, const std::string& postData);
 private:
     // Callback функция для обработки ответа CURL
     static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp);
