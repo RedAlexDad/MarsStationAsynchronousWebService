@@ -56,6 +56,13 @@ build CMakeFiles/MarsStationAsynchronousWebService.dir/Asynchronous.cpp.o: CXX_C
   OBJECT_DIR = CMakeFiles/MarsStationAsynchronousWebService.dir
   OBJECT_FILE_DIR = CMakeFiles/MarsStationAsynchronousWebService.dir
 
+build CMakeFiles/MarsStationAsynchronousWebService.dir/main.cpp.o: CXX_COMPILER__MarsStationAsynchronousWebService_unscanned_Debug /home/redalexdad/Документы/GitHub/MarsStationAsynchronousWebService/main.cpp || cmake_object_order_depends_target_MarsStationAsynchronousWebService
+  DEP_FILE = CMakeFiles/MarsStationAsynchronousWebService.dir/main.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/usr/include/jsoncpp
+  OBJECT_DIR = CMakeFiles/MarsStationAsynchronousWebService.dir
+  OBJECT_FILE_DIR = CMakeFiles/MarsStationAsynchronousWebService.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target MarsStationAsynchronousWebService
@@ -64,7 +71,7 @@ build CMakeFiles/MarsStationAsynchronousWebService.dir/Asynchronous.cpp.o: CXX_C
 #############################################
 # Link the executable MarsStationAsynchronousWebService
 
-build MarsStationAsynchronousWebService: CXX_EXECUTABLE_LINKER__MarsStationAsynchronousWebService_Debug CMakeFiles/MarsStationAsynchronousWebService.dir/Asynchronous.cpp.o
+build MarsStationAsynchronousWebService: CXX_EXECUTABLE_LINKER__MarsStationAsynchronousWebService_Debug CMakeFiles/MarsStationAsynchronousWebService.dir/Asynchronous.cpp.o CMakeFiles/MarsStationAsynchronousWebService.dir/main.cpp.o
   FLAGS = -g
   LINK_LIBRARIES = -ljsoncpp  -lcurl
   OBJECT_DIR = CMakeFiles/MarsStationAsynchronousWebService.dir

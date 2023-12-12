@@ -1,4 +1,15 @@
 /home/redalexdad/Programs/clion-2023.2.2/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/redalexdad/Programs/clion-2023.2.2/bin/ninja/linux/x64/ninja -G Ninja -S /home/redalexdad/Документы/GitHub/MarsStationAsynchronousWebService -B /home/redalexdad/Документы/GitHub/MarsStationAsynchronousWebService/cmake-build-debug
--- Configuring done (0.0s)
--- Generating done (0.0s)
--- Build files have been written to: /home/redalexdad/Документы/GitHub/MarsStationAsynchronousWebService/cmake-build-debug
+CMake Error at CMakeLists.txt:9 (find_package):
+  Could not find a package configuration file provided by "tabulate" with any
+  of the following names:
+
+    tabulateConfig.cmake
+    tabulate-config.cmake
+
+  Add the installation prefix of "tabulate" to CMAKE_PREFIX_PATH or set
+  "tabulate_DIR" to a directory containing one of the above files.  If
+  "tabulate" provides a separate development package or SDK, be sure it has
+  been installed.
+
+
+-- Configuring incomplete, errors occurred!

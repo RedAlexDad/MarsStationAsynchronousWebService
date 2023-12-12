@@ -2260,6 +2260,18 @@
 			],
 			"type" : "INTERNAL",
 			"value" : "/usr/lib/x86_64-linux-gnu"
+		},
+		{
+			"name" : "tabulate_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for tabulate."
+				}
+			],
+			"type" : "PATH",
+			"value" : "tabulate_DIR-NOTFOUND"
 		}
 	],
 	"kind" : "cache",

@@ -254,6 +254,9 @@ pkgcfg_lib_JSONCPP_jsoncpp:FILEPATH=/usr/lib/x86_64-linux-gnu/libjsoncpp.so
 //Path to a library.
 pkgcfg_lib_PC_CURL_curl:FILEPATH=/usr/lib/x86_64-linux-gnu/libcurl.so
 
+//The directory containing a CMake configuration file for tabulate.
+tabulate_DIR:PATH=tabulate_DIR-NOTFOUND
+
 
 ########################
 # INTERNAL cache entries
