@@ -1,0 +1,5 @@
+# ninja log v5
+0	34	1702378730004676091	build.ninja	23685df8f80eb360
+1	308	1702378705836209897	CMakeFiles/MarsStationAsynchronousWebService.dir/Asynchronous.cpp.o	312f96fbe613030
+0	32	1702378730004676091	build.ninja	23685df8f80eb360
+2	150	1702378730160679105	MarsStationAsynchronousWebService	ec16dd254d219f62
