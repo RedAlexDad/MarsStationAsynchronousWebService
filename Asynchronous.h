@@ -5,29 +5,35 @@
 #include <string>
 #include <curl/curl.h>
 #include <jsoncpp/json/json.h>
+#include "httplib.h"
 
 class Asynchronous {
 public:
     Asynchronous();
+
     ~Asynchronous();
 
     // Метод для выполнения GET
-    bool performGetCurlRequest(const std::string& url, std::string& response);
+    bool performGetCurlRequest(const std::string &url, std::string &response);
 
     // Метод для выполнения POST
-    bool performPostCurlRequest(const std::string& url, const std::string& postData, std::string& response);
+    bool performPostCurlRequest(const std::string &url, const std::string &postData, std::string &response);
 
     // Метод для парсинга в JSON формата
-    bool parseJsonResponse(const std::string& jsonResponse, Json::Value& parsedRoot);
+    bool parseJsonResponse(const std::string &jsonResponse, Json::Value &parsedRoot);
 
     // Метод для выполнения запроса и вывода ответа
-    void executeGetRequest(const std::string& apiUrl);
+    void executeGetRequest(const std::string &apiUrl);
 
     // Метод для обработки JSON-ответа
-    void processJsonResponseGeographicalObject(const std::string& apiUrl);
+    void processJsonResponseGeographicalObject(const std::string &apiUrl);
 
     // Метод для выполнения POST-запроса и вывода ответа
-    void executePostRequestGeographicalObject(const std::string& apiUrl, const std::string& postData);
+    void executePostRequestGeographicalObject(const std::string &apiUrl, const std::string &postData);
+
+    // Метод для выполнения POST-запроса с postman
+    void POST_async_calc(const httplib::Request &req, httplib::Response &res);
+
 private:
     // Callback функция для обработки ответа CURL
     static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp);

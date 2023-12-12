@@ -16,7 +16,7 @@ size_t Asynchronous::WriteCallback(void *contents, size_t size, size_t nmemb, vo
     return size * nmemb;
 }
 
-bool Asynchronous::performGetCurlRequest(const std::string& url, std::string& response) {
+bool Asynchronous::performGetCurlRequest(const std::string &url, std::string &response) {
     if (!curl) {
         std::cerr << "Failed to initialize CURL" << std::endl;
         return false;
@@ -35,7 +35,7 @@ bool Asynchronous::performGetCurlRequest(const std::string& url, std::string& re
     return true;
 }
 
-bool Asynchronous::performPostCurlRequest(const std::string& url, const std::string& postData, std::string& response) {
+bool Asynchronous::performPostCurlRequest(const std::string &url, const std::string &postData, std::string &response) {
     if (!curl) {
         std::cerr << "Failed to initialize CURL" << std::endl;
         return false;
@@ -72,10 +72,10 @@ bool Asynchronous::performPostCurlRequest(const std::string& url, const std::str
 }
 
 
-
-bool Asynchronous::parseJsonResponse(const std::string& jsonResponse, Json::Value& parsedRoot) {
+bool Asynchronous::parseJsonResponse(const std::string &jsonResponse, Json::Value &parsedRoot) {
     std::string errs;
-    bool parsingSuccessful = jsonReader->parse(jsonResponse.c_str(), jsonResponse.c_str() + jsonResponse.size(), &parsedRoot, &errs);
+    bool parsingSuccessful = jsonReader->parse(jsonResponse.c_str(), jsonResponse.c_str() + jsonResponse.size(),
+                                               &parsedRoot, &errs);
     if (!parsingSuccessful) {
         std::cerr << "Failed to parse JSON: " << errs << std::endl;
         return false;
@@ -84,7 +84,7 @@ bool Asynchronous::parseJsonResponse(const std::string& jsonResponse, Json::Valu
     return true;
 }
 
-void Asynchronous::executeGetRequest(const std::string& apiUrl) {
+void Asynchronous::executeGetRequest(const std::string &apiUrl) {
     std::string response;
     // Выполняем CURL запрос и выводим ответ
     if (performGetCurlRequest(apiUrl, response)) {
@@ -94,7 +94,7 @@ void Asynchronous::executeGetRequest(const std::string& apiUrl) {
     }
 }
 
-void Asynchronous::processJsonResponseGeographicalObject(const std::string& apiUrl) {
+void Asynchronous::processJsonResponseGeographicalObject(const std::string &apiUrl) {
     std::string response;
     // Выполняем CURL запрос и выводим ответ
     if (performGetCurlRequest(apiUrl, response)) {
@@ -103,7 +103,7 @@ void Asynchronous::processJsonResponseGeographicalObject(const std::string& apiU
         // Обработка каждого элемента результата
         if (parseJsonResponse(response, root)) {
             const Json::Value results = root["results"];
-            for (const Json::Value &result : results) {
+            for (const Json::Value &result: results) {
                 std::cout << "Feature: " << result["feature"].asString() << std::endl;
                 std::cout << "Type: " << result["Type"].asString() << std::endl;
                 std::cout << "--------" << std::endl;
@@ -114,7 +114,7 @@ void Asynchronous::processJsonResponseGeographicalObject(const std::string& apiU
     }
 }
 
-void Asynchronous::executePostRequestGeographicalObject(const std::string& apiUrl, const std::string& postData) {
+void Asynchronous::executePostRequestGeographicalObject(const std::string &apiUrl, const std::string &postData) {
     std::string response;
     // Выполняем POST-запрос и выводим ответ
     if (performPostCurlRequest(apiUrl, postData, response)) {
@@ -126,5 +126,26 @@ void Asynchronous::executePostRequestGeographicalObject(const std::string& apiUr
         }
     } else {
         std::cerr << "Failed to perform CURL request. Error: " << curlError << std::endl;
+    }
+}
+
+void Asynchronous::POST_async_calc(const httplib::Request &req, httplib::Response &res) {
+    // Получаем тело запроса
+    std::string body = req.body;
+
+    // Пытаемся распарсить JSON из тела запроса
+    Json::CharReaderBuilder jsonReader;
+    Json::Value jsonParams;
+    std::istringstream jsonStream(body);
+    Json::parseFromStream(jsonReader, jsonStream, &jsonParams, nullptr);
+
+    // Проверяем наличие параметра "id_draft"
+    if (jsonParams.isMember("id_draft")) {
+        // Параметр "id_draft" присутствует в JSON
+        int id_draft = jsonParams["id_draft"].asInt();
+        res.set_content("ID Draft: " + std::to_string(id_draft), "application/json");
+    } else {
+        // Параметр "id_draft" отсутствует в JSON
+        res.set_content("Error: id_draft parameter is missing", "application/json");
     }
 }
