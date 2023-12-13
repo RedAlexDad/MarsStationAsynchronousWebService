@@ -1,3 +1,0 @@
-/home/redalexdad/Документы/GitHub/MarsStationAsynchronousWebService/cmake-build-debug/CMakeFiles/MarsStationAsynchronousWebService.dir
-/home/redalexdad/Документы/GitHub/MarsStationAsynchronousWebService/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/redalexdad/Документы/GitHub/MarsStationAsynchronousWebService/cmake-build-debug/CMakeFiles/rebuild_cache.dir
