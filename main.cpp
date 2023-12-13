@@ -3,9 +3,7 @@
 #include <microhttpd.h>
 #include <cstring>
 
-#define DOMEN_PYTHON "http://127.0.0.1:8000/"
-#define PORT 5000
-#define DOMEN_CPP "127.0.0.1"
+
 
 int main() {
 
@@ -27,12 +25,26 @@ int main() {
     //     "photo": "",
     //     "status": false
     // })";
-    // async.executePostRequestGeographicalObject(apiUrlPost, data);
+    // async.executePostRequest(apiUrlPost, data);
 
     // Обработка POST-запроса по указанному пути
     svr.Post("/api/async_calc/", [&async](const httplib::Request &req, httplib::Response &res) {
         async.POST_async_calc(req, res);
     });
+
+    // svr.Put("/api/async_result/", [&async](const httplib::Request& req, httplib::Response& res) {
+    //     async.PUT_async_result(req, res);
+    // });
+
+    // Для выполнения метода PUT
+    // std::string apiUrlPut = std::string(DOMEN_PYTHON) + "api/async_result/";
+    // // // Создаем объект для PUT-запроса
+    // std::string data_put = R"({
+    //     "id_draft": 1,
+    //     "status_mission": "Успех",
+    //     "access_token": ""
+    // })";
+    // async.executePutRequest(apiUrlPut, data_put);
 
     // Запуск сервера
     svr.listen(DOMEN_CPP, PORT);
